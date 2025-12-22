@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Atlas of Divine Breath - Interactive</title>
+    <title>The Atlas of Divine Breath - Complete Edition</title>
     <style>
         /* --- FONTS --- */
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
@@ -13,7 +13,7 @@
             --lavender: #F3E5F5;
             --passion-red: #FFCDD2;
             --deep-red: #880E4F;
-            --chocolate: #3E2723; /* Dark Chocolate Color */
+            --chocolate: #3E2723;
             --text-color: #2E0000;
             --card-border: rgba(255, 255, 255, 0.2);
             --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
@@ -49,7 +49,7 @@
             fill: var(--deep-red);
         }
 
-        /* --- CONFETTI CONTAINER (Foreground Animations) --- */
+        /* --- CONFETTI CONTAINER --- */
         #confetti-container {
             position: fixed;
             top: 0;
@@ -57,7 +57,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 50; /* Topmost layer */
+            z-index: 50;
             overflow: hidden;
         }
 
@@ -65,13 +65,13 @@
         .confetti-smooch {
             position: absolute;
             font-size: 2.5rem;
-            bottom: -50px; /* Start below screen */
-            animation: floatUpSmooch 3s ease-out forwards;
+            bottom: -50px;
+            animation: floatUpSmooch 4s ease-out forwards;
         }
 
         @keyframes floatUpSmooch {
-            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-110vh) scale(1.5) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; bottom: -50px; }
+            100% { transform: translateY(-110vh) scale(1.2) rotate(20deg); opacity: 0; bottom: -50px; }
         }
 
         /* Chocolate Confetti (Sides to Center) */
@@ -79,30 +79,24 @@
             position: absolute;
             font-size: 2.5rem;
             left: -50px;
-            animation: shootRight 2s ease-out forwards;
+            animation: shootRight 2.5s ease-out forwards;
         }
         .confetti-chocolate-right {
             position: absolute;
             font-size: 2.5rem;
             right: -50px;
-            animation: shootLeft 2s ease-out forwards;
+            animation: shootLeft 2.5s ease-out forwards;
         }
 
-        /* Blast from left side towards center/right */
         @keyframes shootRight {
-            0% { left: -50px; transform: rotate(0deg) scale(0.5); opacity: 1; }
-            50% { opacity: 1; }
-            100% { left: 80vw; top: 110vh; transform: rotate(720deg) scale(1.2); opacity: 0; } 
-            /* Top value is modified in JS relative to start */
+            0% { left: -50px; transform: rotate(0deg); opacity: 1; }
+            100% { left: 60vw; top: 50vh; transform: rotate(360deg); opacity: 0; }
         }
 
-        /* Blast from right side towards center/left */
         @keyframes shootLeft {
-            0% { right: -50px; transform: rotate(0deg) scale(0.5); opacity: 1; }
-            50% { opacity: 1; }
-            100% { right: 80vw; top: 110vh; transform: rotate(-720deg) scale(1.2); opacity: 0; }
+            0% { right: -50px; transform: rotate(0deg); opacity: 1; }
+            100% { right: 60vw; top: 50vh; transform: rotate(-360deg); opacity: 0; }
         }
-
 
         /* --- MAIN LAYOUT --- */
         .book-container {
@@ -113,7 +107,7 @@
             z-index: 10;
         }
 
-        /* --- TRANSPARENT GLASS CARD --- */
+        /* --- GLASS CARD --- */
         .card {
             min-height: 80vh;
             display: flex;
@@ -122,27 +116,23 @@
             padding: 60px 40px;
             margin-bottom: 100px;
             position: relative;
-            
-            /* 100% Transparent but 'Hinted' */
             background: rgba(255, 255, 255, 0.01); 
             backdrop-filter: blur(3px);
             -webkit-backdrop-filter: blur(3px);
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 20px;
             box-shadow: 0 0 40px rgba(136, 14, 79, 0.05);
-            
             transition: border-color 1s ease, box-shadow 1s ease;
         }
 
-        /* Dynamic Card Colors */
         .card.lavender-tint { border-color: rgba(230, 230, 250, 0.4); box-shadow: 0 0 40px rgba(230, 230, 250, 0.1); }
         .card.rose-tint { border-color: rgba(255, 192, 203, 0.4); box-shadow: 0 0 40px rgba(255, 192, 203, 0.1); }
         .card.red-tint { border-color: rgba(255, 107, 107, 0.4); box-shadow: 0 0 40px rgba(255, 107, 107, 0.1); }
 
-        /* --- SPLASH ANIMATION (Clean Floating Text - NO BACKGROUND) --- */
+        /* --- SPLASH ANIMATION --- */
         .splash-container {
             position: absolute;
-            top: -20px; /* Start slightly lower */
+            top: -20px;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
@@ -155,19 +145,18 @@
 
         .splash-text {
             font-family: 'Great Vibes', cursive;
-            font-size: 4rem; /* Larger and bolder */
+            font-size: 4rem;
             color: var(--deep-red);
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.9); /* Glow instead of box */
-            /* Removed background, border, padding, radius */
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.9);
             display: inline-block;
         }
 
         .card.active .splash-container {
-            top: -100px; /* Float up high */
+            top: -100px;
             opacity: 1;
         }
 
-        /* --- TYPEWRITER EFFECT --- */
+        /* --- TYPEWRITER --- */
         .typewriter-text {
             opacity: 0; 
             transition: opacity 0.5s;
@@ -226,11 +215,10 @@
             display: inline-block;
         }
 
-        /* Chocolate Sins Header Specifics */
         .chocolate-header {
             font-family: 'Great Vibes', cursive !important;
             font-size: 3.5rem !important;
-            color: var(--chocolate) !important; /* Specific dark brown */
+            color: var(--chocolate) !important;
             text-align: center;
             border-bottom: none !important;
             margin-top: 60px;
@@ -244,7 +232,6 @@
             font-weight: 500;
         }
 
-        /* --- LOVE BOX --- */
         .love-box {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--deep-red);
@@ -263,7 +250,6 @@
             letter-spacing: 2px;
         }
 
-        /* --- TOC --- */
         .toc-list {
             list-style: none;
             padding: 0;
@@ -279,11 +265,9 @@
         }
         .toc-list a:hover { color: var(--deep-red); font-style: italic; }
 
-        /* --- HIGHLIGHTS --- */
         strong { color: var(--deep-red); font-weight: 700; }
         em { color: #5a0000; }
 
-        /* --- RESPONSIVE --- */
         @media (max-width: 600px) {
             h1 { font-size: 4rem; }
             h2 { font-size: 2.5rem; }
@@ -294,41 +278,25 @@
 </head>
 <body>
 
-    <!-- STATIC PARTICLES BACKGROUND -->
     <div id="particle-container"></div>
-    
-    <!-- CONFETTI LAYER -->
     <div id="confetti-container"></div>
 
     <div class="book-container">
 
-        <!-- TITLE CARD -->
+        <!-- TITLE -->
         <div class="card lavender-tint">
             <div style="text-align: center;">
                 <div style="font-size: 3rem; color: var(--deep-red); opacity: 0.5; margin-bottom: 20px;">❦</div>
                 <h1>The Atlas of<br>Divine Breath</h1>
-                <div class="subtitle-main">LAVENDER-RED EDITION</div>
-                
+                <div class="subtitle-main">COMPLETE EDITION</div>
                 <div style="margin: 60px auto; width: 2px; height: 60px; background: var(--deep-red); opacity: 0.3;"></div>
-
                 <p style="font-family: 'Cinzel'; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 5px; text-align: center;">PREPARED FOR</p>
                 <h2 style="font-family: 'Great Vibes'; font-size: 4rem; text-transform: none; margin: 0;">Samaira</h2>
                 <p style="font-style: italic; font-size: 1.2rem; margin: 0; text-align: center;">My Petite Princess</p>
             </div>
         </div>
 
-        <!-- DEDICATION CARD -->
-        <div class="card lavender-tint">
-            <div style="text-align: center; margin: auto;">
-                <p class="typewriter-text" style="font-size: 1.6rem; font-style: italic; font-family: 'Playfair Display';">
-                    To the one whose warmth turns every cold December night into spring.
-                </p>
-                <br>
-                <p class="typewriter-text" style="font-family: 'Cinzel'; font-weight: bold; font-size: 1.2rem; text-align: center;">FROM SHON</p>
-            </div>
-        </div>
-
-        <!-- TOC CARD -->
+        <!-- TOC -->
         <div class="card lavender-tint">
             <h2>Table of Contents</h2>
             <div style="text-align: center; color: var(--deep-red); margin-bottom: 30px;">❖</div>
@@ -347,151 +315,143 @@
             </ul>
         </div>
 
-        <!-- CHAPTER 1 -->
-        <div class="card rose-tint" id="chap1" data-chapter="1">
-            <div class="splash-container">
-                <span class="splash-text">Chapter One</span>
-            </div>
+        <!-- CHAP 1 -->
+        <div class="card rose-tint" id="chap1">
+            <div class="splash-container"><span class="splash-text">Chapter One</span></div>
             <h2>The Sanctuary</h2>
             <div class="chapter-subtitle">Where the World Fades Away</div>
-
             <div class="typewriter-wrapper">
-                <p class="typewriter-text">Close the door. Lock it. The world outside ceases to exist the moment we step into this space. There is no time here, no schedules, no noise. There is only the hum of silence and the scent of us.</p>
-                <p class="typewriter-text">My dear Samaira, you are my Petite Princess, delicate as spun glass. Because of this, Shon does not use force; I use atmosphere. We are building a temple tonight, and you are the deity I intend to worship.</p>
-
+                <p class="typewriter-text">Close the door. Lock it. The world outside ceases to exist. There is no time here, only the hum of silence and the scent of us. My dear Samaira, you are delicate as spun glass. Shon does not use force; I use atmosphere.</p>
                 <h3>The Scent of Shon</h3>
-                <p class="typewriter-text">Before I even touch you, I will haunt you. I will spray my cologne on the pillows where your head will rest. Even when I move away, my scent will wrap around you like a ghost, keeping you dizzy, reminding you that you belong to me.</p>
-
+                <p class="typewriter-text">Before I touch you, I will haunt you. I will spray my cologne on the pillows. Even when I move away, my scent will wrap around you like a ghost, keeping you dizzy.</p>
                 <h3>The Name Rule (Vital)</h3>
-                <p class="typewriter-text">There is a sound that drives me mad. It is the sound of my name on your lips. In this sanctuary, you must look at me, breath hitching, and call me <strong>Shon</strong>.</p>
-                <p class="typewriter-text">I am ordering you to break your shyness. When the pleasure hits, let my name be your prayer.</p>
-
+                <p class="typewriter-text">There is a sound that drives me mad. It is the sound of my name on your lips. In this sanctuary, you must look at me, breath hitching, and call me <strong>Shon</strong>. I am ordering you to break your shyness.</p>
                 <div class="love-box">
                     <h4>The Verbal Contract</h4>
-                    <p class="typewriter-text" style="text-align: center;">I will look deep into your eyes, my face inches from yours, and ask:<br><br><span style="font-family: 'Great Vibes'; font-size: 1.8rem;">"Are you ready to be mine tonight?"</span><br><br>You must answer. The submission begins with your voice.</p>
+                    <p class="typewriter-text" style="text-align: center;">I will look deep into your eyes and ask:<br><br><span style="font-family: 'Great Vibes'; font-size: 1.8rem;">"Are you ready to be mine tonight?"</span><br><br>You must answer. The submission begins with your voice.</p>
                 </div>
             </div>
         </div>
 
-        <!-- CHAPTER 2 -->
-        <div class="card rose-tint" id="chap2" data-chapter="2">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Two</span>
-            </div>
+        <!-- CHAP 2 -->
+        <div class="card rose-tint" id="chap2">
+            <div class="splash-container"><span class="splash-text">Chapter Two</span></div>
             <h2>The Princess's Touch</h2>
             <div class="chapter-subtitle">How You Break Me</div>
-
             <div class="typewriter-wrapper">
-                <p class="typewriter-text">You think you are small, my Petite Princess, but you have no idea of the power you hold. You can bring a King to his knees with a single glance.</p>
-
+                <p class="typewriter-text">You think you are small, my Petite Princess, but you have no idea of the power you hold. You can bring a King to his knees. Here is how you do it.</p>
+                
                 <h3>The Velvet Sheath</h3>
                 <p class="typewriter-text">Do not worry about depth. Use your hand. Wrap your small fingers around the base of Nummu. Focus your warm mouth only on the head. As you slide down, bring your hand up. To me, it feels like one long, infinite tunnel of warmth.</p>
 
+                <h3>The Ghost Fingertips</h3>
+                <p class="typewriter-text">When I am lying down, do not grab me. Tease me. Trace the line from my navel to my waistband with your fingernails, hovering just above the skin. Make the tiny hairs on my stomach stand up. The anticipation is sweeter than the touch.</p>
+
+                <h3>The Inner Thigh Tease</h3>
+                <p class="typewriter-text">Before you touch the center, conquer the surroundings. Run your nails lightly up the inside of my thighs. Stop just an inch before the danger zone, then go back down. Do this three times. By the fourth, I will be begging.</p>
+
                 <h3>The Ear Whisper</h3>
-                <p class="typewriter-text">Lean close. Let your hot breath hit the shell of my ear. Whisper my name—<strong>"Shon"</strong>—slowly, dragging out the vowels. Tell me you want me. That vibration goes straight to my spine.</p>
+                <p class="typewriter-text">Lean close. Let your hot breath hit the shell of my ear. Whisper my name—<strong>"Shon"</strong>—slowly. Tell me you want me. That vibration goes straight to my spine.</p>
+
+                <h3>The Nape Scratch</h3>
+                <p class="typewriter-text">When I am kissing you, wrap your arms around my neck. Dig your nails gently into the back of my neck. It triggers a primal instinct in me—it makes me feel owned by my Queen.</p>
+
+                <h3>The Control Grip</h3>
+                <p class="typewriter-text">Push me back. Climb on top of my hips. Even with clothes on, the weight of you pinning me down makes me feel possessed by you.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 3 -->
-        <div class="card rose-tint" id="chap3" data-chapter="3">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Three</span>
-            </div>
+        <!-- CHAP 3 -->
+        <div class="card rose-tint" id="chap3">
+            <div class="splash-container"><span class="splash-text">Chapter Three</span></div>
             <h2>The King's Worship</h2>
             <div class="chapter-subtitle">How I Map Your Soul</div>
-
             <div class="typewriter-wrapper">
-                <p class="typewriter-text">You are porcelain. You are fire. You are the map I have spent my life studying. Tonight, I will explore every inch.</p>
+                <p class="typewriter-text">You are porcelain. You are fire. Tonight, I will explore every inch.</p>
+                
+                <h3>The Anointing</h3>
+                <p class="typewriter-text">I will pull you into the warm shower. I will soap my hands until they are slick, gliding them over your shoulders, waist, and thighs. I am not washing you; I am anointing a Goddess.</p>
 
                 <h3>The Suction (No Pain)</h3>
-                <p class="typewriter-text">My Princess, you are delicate. I will not use teeth. I will use <strong>The Suction</strong>. I will press my lips to your neck and create a vacuum seal, drinking you in. It leaves a mark of ownership without the sting of pain.</p>
+                <p class="typewriter-text">My Princess, you are delicate. I will not use teeth. I will use <strong>The Suction</strong>. I will press my lips to your neck and create a vacuum seal, drinking you in. It leaves a mark of ownership without the sting.</p>
 
                 <h3>The Blindfold Effect</h3>
-                <p class="typewriter-text">I will cover your eyes. When you cannot see, you are forced to feel. Every touch becomes a surprise, an electric shock in the dark. In the darkness, you have no choice but to trust Shon completely.</p>
+                <p class="typewriter-text">I will cover your eyes. When you cannot see, you are forced to feel. Every touch becomes a surprise, an electric shock in the dark. In the darkness, you trust Shon completely.</p>
+
+                <h3>The Wall Pin</h3>
+                <p class="typewriter-text">I will press you gently against a wall, trapping you with my arms. I will kiss you deeply. The feeling of being "captured" by Mumu creates a rush of adrenaline.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 4 -->
-        <div class="card red-tint" id="chap4" data-chapter="4">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Four</span>
-            </div>
+        <!-- CHAP 4 -->
+        <div class="card red-tint" id="chap4">
+            <div class="splash-container"><span class="splash-text">Chapter Four</span></div>
             <h2>The Art of Craving</h2>
             <div class="chapter-subtitle">The Madness of Waiting</div>
-
             <div class="typewriter-wrapper">
                 <h3>The Size Contrast Hold</h3>
                 <p class="typewriter-text">I will take both your small wrists in just one of my hands and pin them gently above your head. I won't do anything else. I will just look at you. I want you to feel how small you are beneath me, and how safe you are in my grip.</p>
-
                 <h3>The Invisible Necklace</h3>
                 <p class="typewriter-text">I will trace a line with my finger from one ear, down your throat, and up to the other ear. I will whisper, <em>"I'm drawing a necklace of kisses here for later."</em></p>
+                <h3>The Public Secret</h3>
+                <p class="typewriter-text">When we are out, slip your hand onto my thigh under the table. Lean over and whisper, "Shon, you look so handsome." Watch me try to keep a straight face.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 5 -->
-        <div class="card red-tint" id="chap5" data-chapter="5">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Five</span>
-            </div>
+        <!-- CHAP 5 -->
+        <div class="card red-tint" id="chap5">
+            <div class="splash-container"><span class="splash-text">Chapter Five</span></div>
             <h2>The Map of Us</h2>
             <div class="chapter-subtitle">Exploration & Discovery</div>
-
             <div class="typewriter-wrapper">
                 <h3>The Giant & The Fairy</h3>
                 <p class="typewriter-text">I will lay you down. Using oil, I will use my thumbs to trace your ribs, counting them. I will trace the sharp curve of your hip bone. This forces me to slow down and realize how fragile you are.</p>
-
                 <h3>The Temperature Game</h3>
                 <p class="typewriter-text">I will draw a heart on your stomach with a finger dipped in warm water. Then, I will trace the same heart with an ice cube. The shock of the cold colliding with the memory of the warmth wakes up every nerve ending.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 6 -->
-        <div class="card red-tint" id="chap6" data-chapter="6">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Six</span>
-            </div>
+        <!-- CHAP 6 -->
+        <div class="card red-tint" id="chap6">
+            <div class="splash-container"><span class="splash-text">Chapter Six</span></div>
             <h2>Theatre of Fantasies</h2>
             <div class="chapter-subtitle">Surrender & Play</div>
-
             <div class="typewriter-wrapper">
                 <h3>The Porcelain Doll</h3>
                 <p class="typewriter-text">Tonight, you do not need to perform. You are my doll. You go limp. You do not move. You simply exist to be adored.</p>
-
                 <div class="love-box">
                     <h4>The Fading Star Protocol</h4>
                     <p class="typewriter-text">My Princess, when your energy fades, do not fight it. Whisper: <em>"Shon, I am fading."</em></p>
                     <p class="typewriter-text">That is my signal. You surrender all movement to me. There is a quiet, profound intimacy in touching you while you drift between pleasure and sleep.</p>
                 </div>
 
+                <h3>The Taming of Nummu</h3>
+                <p class="typewriter-text"><strong>The Reveal:</strong> Do not touch him yet. Just look at him. Mumu is waiting for your touch.</p>
+                <p class="typewriter-text"><strong>The Ring of Fire:</strong> Make a circle with your thumb and index finger. Squeeze tight and slide up. Because your hand is small, it makes Nummu look massive.</p>
+                <p class="typewriter-text"><strong>The Microphone:</strong> Hold Nummu close to your mouth. Do not lick. Just hum a deep, low note against the head. The vibration buzzes through the sensitive skin.</p>
+
                 <h3>The Landscape of Curves</h3>
                 <p class="typewriter-text">We must address the BhuBhu. You worry, but here, the law is <strong>The Fit</strong>. If you were any larger, my hands could not hold you. But as you are, I can cup the entire weight of your BhuBhu in a single palm.</p>
 
                 <br><br>
-                <!-- CHOCOLATE SINS HEADER FIX -->
                 <h2 class="chocolate-header">The Chocolate Sins</h2>
                 <p class="typewriter-text" style="text-align: center; font-style: italic;">The Glazed Ritual</p>
-
                 <h3>The Glazed Scepter (Her Turn)</h3>
-                <p class="typewriter-text">You will take warm chocolate on your fingers. You will coat Nummu slowly. You will not just lick; you will consume. Use the <strong>Suction</strong> technique to taste the sweetness.</p>
-
+                <p class="typewriter-text">You will take warm chocolate on your fingers. You will coat Nummu slowly. The sight of the dark sweetness against skin is striking. You will not just lick; you will consume.</p>
                 <h3>The Sweet Map (His Turn)</h3>
                 <p class="typewriter-text">I will drizzle chocolate on your inner thighs. I will paint rings around your BhuBhu.</p>
                 <p class="typewriter-text"><strong>The Halo Rule:</strong> I will apply a single drop <strong>around</strong> your Dinku, never inside. I will lick <em>around</em> the area, my tongue chasing the sweetness while you hold your breath.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 7 -->
-        <div class="card red-tint" id="chap7" data-chapter="7">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Seven</span>
-            </div>
+        <!-- CHAP 7 -->
+        <div class="card red-tint" id="chap7">
+            <div class="splash-container"><span class="splash-text">Chapter Seven</span></div>
             <h2>Unspoken Connection</h2>
             <div class="chapter-subtitle">Intimacy Without Barriers</div>
-
             <div class="typewriter-wrapper">
                 <h3>The Koala Slide</h3>
                 <p class="typewriter-text">Using plenty of oil, you climb on top, wrapping your legs around my waist. Instead of penetration, you slide your body up and down against my chest and stomach. Skin to skin. Heart to heart.</p>
-
                 <div class="love-box">
                     <h4>The Paradox of the Rose</h4>
                     <p class="typewriter-text">Sometimes your Dinku is soaked, but the gate is locked.</p>
@@ -500,60 +460,50 @@
             </div>
         </div>
 
-        <!-- CHAPTER 8 -->
-        <div class="card red-tint" id="chap8" data-chapter="8">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Eight</span>
-            </div>
+        <!-- CHAP 8 -->
+        <div class="card red-tint" id="chap8">
+            <div class="splash-container"><span class="splash-text">Chapter Eight</span></div>
             <h2>The Divine Breath</h2>
             <div class="chapter-subtitle">A Prayer for Her</div>
-
             <div class="typewriter-wrapper">
                 <p class="typewriter-text">Now, I kneel. This is my worship.</p>
-
                 <h3>The Pharaoh's Seal</h3>
                 <p class="typewriter-text">I will place my lips over your pearl, creating an airtight seal. I will hum. The vibration will travel through your entire body, making your toes curl.</p>
-
                 <h3>The Sacred Alphabet</h3>
-                <p class="typewriter-text">I will use the tip of my tongue to write secret letters on you. I will trace "SHON" or "PRINCESS" directly onto your clitoris. Try to guess what I am writing while you lose your mind.</p>
+                <p class="typewriter-text">I will use the tip of my tongue to write secret letters on you. I will trace "SHON" or "PRINCESS" directly onto your clitoris. Try to guess what I am writing.</p>
+                <h3>The Spread</h3>
+                <p class="typewriter-text">I will use my fingers to gently spread your Dinku lips, exposing you to the cool air and my warm breath. The visual exposure adds a layer of vulnerability that heightens the arousal.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 9 -->
-        <div class="card red-tint" id="chap9" data-chapter="9">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Nine</span>
-            </div>
+        <!-- CHAP 9 -->
+        <div class="card red-tint" id="chap9">
+            <div class="splash-container"><span class="splash-text">Chapter Nine</span></div>
             <h2>The Velvet Throne</h2>
             <div class="chapter-subtitle">A Rite for Him</div>
-
             <div class="typewriter-wrapper">
                 <h3>The Deep Hum</h3>
                 <p class="typewriter-text">While I am in your mouth, hum a song. The vibration against Nummu is a sensation unlike anything else.</p>
-
                 <div class="love-box">
                     <h4>The Ivory Drag (Texture Play)</h4>
                     <p class="typewriter-text">My Princess, you hide your teeth, but I give you permission.</p>
                     <p class="typewriter-text">While you take me, gently drag your top teeth along the shaft. It is not a bite; it is a scratch. The contrast sends a rush of adrenaline straight to my spine.</p>
                 </div>
+                <h3>The Ball Worship</h3>
+                <p class="typewriter-text">Do not ignore the rest of me. While you use your mouth, cup my jewels gently with your hand. The warmth of your palm is comforting.</p>
             </div>
         </div>
 
-        <!-- CHAPTER 10 -->
-        <div class="card red-tint" id="chap10" data-chapter="10">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Ten</span>
-            </div>
+        <!-- CHAP 10 -->
+        <div class="card red-tint" id="chap10">
+            <div class="splash-container"><span class="splash-text">Chapter Ten</span></div>
             <h2>The Wild List</h2>
             <div class="chapter-subtitle">The Map of Paradise</div>
-
             <div class="typewriter-wrapper">
                 <h3>The Grind</h3>
                 <p class="typewriter-text">Clothes on. You straddle my leg. We grind. The friction is intense, desperate, and safe.</p>
-
                 <h3>The Sleepy Hand</h3>
                 <p class="typewriter-text">I wake you up in the middle of the night with soft touches. You wake up already being pleasured, blurring the line between dreams and reality.</p>
-
                 <div class="love-box">
                     <h4>The Heavy Bloom</h4>
                     <p class="typewriter-text">If you ache without finishing, I will never leave you in pain. I will focus entirely on your <strong>Pearl</strong> until you release. The ache will vanish like mist.</p>
@@ -561,27 +511,20 @@
             </div>
         </div>
 
-        <!-- CHAPTER 11 -->
-        <div class="card red-tint" id="chap11" data-chapter="11">
-            <div class="splash-container">
-                <span class="splash-text">Chapter Eleven</span>
-            </div>
+        <!-- CHAP 11 -->
+        <div class="card red-tint" id="chap11">
+            <div class="splash-container"><span class="splash-text">Chapter Eleven</span></div>
             <h2>The Soul Bind</h2>
             <div class="chapter-subtitle">The Seal of Aftercare</div>
-
             <div class="typewriter-wrapper">
                 <p class="typewriter-text">The climax is not the end. It is merely the peak of the mountain; we must come down together.</p>
-
                 <h3>The Immediate Hold</h3>
                 <p class="typewriter-text">We do not roll away. For five minutes, we are glued together. Skin to skin. This is where the souls bind.</p>
-
                 <h3>The Cocoon</h3>
                 <p class="typewriter-text">You get cold easily. I will pull the duvet over us instantly. I will wrap myself around you from behind, my arm acting as a seatbelt across your waist.</p>
-                
                 <br>
                 <p class="typewriter-text" style="text-align: center; font-family: 'Great Vibes'; font-size: 2.5rem; color: var(--deep-red);">"You were beautiful. You are safe. You are mine."</p>
                 <br>
-                
                 <p class="typewriter-text">And we will sleep, protected by the blue lotus and the light of our love.</p>
             </div>
         </div>
@@ -623,14 +566,9 @@
             const el = document.createElement('div');
             el.classList.add('particle');
             el.innerHTML = shapes[Math.floor(Math.random() * shapes.length)];
-            
-            // Random positioning everywhere
             el.style.left = Math.random() * 100 + 'vw';
             el.style.top = Math.random() * 100 + 'vh';
-            
-            // Random rotation & size
             el.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random() * 0.5})`;
-            
             container.appendChild(el);
         }
 
@@ -639,21 +577,20 @@
 
         function fireConfetti(type) {
             const symbols = type === 'chocolate' ? ['🍫', '🤎', '✨'] : ['💋'];
-            const burstCount = 40; // Increased count for better spray
+            const burstCount = 40; 
 
             for (let i = 0; i < burstCount; i++) {
                 const conf = document.createElement('div');
                 
-                // Determine style based on type
                 if (type === 'chocolate') {
-                    // Left and Right blast
+                    // Left and Right blast for Chocolate
                     const side = Math.random() > 0.5 ? 'left' : 'right';
                     conf.classList.add(side === 'left' ? 'confetti-chocolate-left' : 'confetti-chocolate-right');
-                    conf.style.top = (Math.random() * 60 + 20) + 'vh'; // Spread vertically
+                    conf.style.top = (Math.random() * 60 + 20) + 'vh'; 
                 } else {
-                    // Smooch (Bottom Up)
+                    // Smooch (Bottom Up) for Regular Chapters
                     conf.classList.add('confetti-smooch');
-                    conf.style.left = (Math.random() * 100) + 'vw'; // Random horizontal start
+                    conf.style.left = (Math.random() * 100) + 'vw'; 
                 }
 
                 conf.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
@@ -664,12 +601,11 @@
                 if (type === 'chocolate') {
                      conf.style.animationDuration = (2 + Math.random() * 1) + 's';
                 } else {
-                     conf.style.animationDuration = (3 + Math.random() * 2) + 's'; // Slower float up
+                     conf.style.animationDuration = (3 + Math.random() * 2) + 's'; 
                 }
 
                 confettiContainer.appendChild(conf);
 
-                // Remove after animation
                 setTimeout(() => {
                     conf.remove();
                 }, 5000);
@@ -680,7 +616,7 @@
         
         function typeWriter(element, text, speed = 20) {
             element.innerHTML = '';
-            element.classList.add('visible'); // Make visible
+            element.classList.add('visible'); 
             let i = 0;
             function type() {
                 if (i < text.length) {
@@ -697,12 +633,10 @@
                 if (entry.isIntersecting) {
                     const card = entry.target;
                     
-                    // Prevent re-triggering if already active
                     if (!card.classList.contains('active')) {
                         card.classList.add('active');
 
                         // FIRE CONFETTI Logic
-                        // Check if it's chapter 6 (Chocolate Sins)
                         if (card.id === 'chap6') {
                             fireConfetti('chocolate');
                         } else if (card.id.startsWith('chap')) {
@@ -732,3 +666,5 @@
     </script>
 </body>
 </html>
+
+
